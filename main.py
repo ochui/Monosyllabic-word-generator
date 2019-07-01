@@ -13,7 +13,7 @@ def translate(word, to_ng='yo'):
     except Exception:
         t = random.randrange(6, 13)
         print('error occurred retrying in {}s..'.format(t))
-        time.sleep()
+        time.sleep(t)
         trans = translator.translate(clean_word(word), dest=to_ng)
         return trans
 
