@@ -1,12 +1,15 @@
 import time
 import random
+import json
+from googletrans import Translator
+
+translator = Translator()
 
 def clean_word(word):
     return word.replace(',', '').strip().lower()
 
 def translate(word, to_ng='yo'):
-    from googletrans import Translator
-    translator = Translator()
+    
     try:
         trans = translator.translate(clean_word(word), dest=to_ng)
         return trans
@@ -14,19 +17,10 @@ def translate(word, to_ng='yo'):
         t = random.randrange(6, 13)
         print('error occurred retrying in {}s..'.format(t))
         time.sleep(t)
-        try:
-            trans = translator.translate(clean_word(word), dest=to_ng)
-            return trans
-        except Exception:
-            t = random.randrange(8, 15)
-            print('error occurred again retrying in {}s..'.format(t))
-            time.sleep(t)
-            trans = translator.translate(clean_word(word), dest=to_ng)
-            return trans
+        translate(word)
 
 def main():
-    import json
-
+    start_time = time.time()
     word_dict = dict()
     print('English --------------------------- Yoruba')
     with open('./word.txt', 'r') as words:
@@ -37,6 +31,9 @@ def main():
             print('{} ---------------------------{}'.format(clean_word(word), translated_word))
             with open('./word_pair.json', 'w') as f:
                     json.dump(word_dict, f, ensure_ascii=False)
+
+    duration = time.time() - start_time
+    print(f"Translated words in {duration} seconds")
 
 if __name__ == "__main__":
     main()
