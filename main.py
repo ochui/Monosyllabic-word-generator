@@ -31,7 +31,7 @@ def main():
     print('English --------------------------- Yoruba')
     with open('./word.txt', 'r') as words:
         for word in words:
-            time.sleep(random.randrange(1, 5))
+            time.sleep(random.randrange(1, 5)) # wait for x second, to avoid ip band
             translated_word = translate(word).text
             word_dict[clean_word(word)] = translated_word
             print('{} ---------------------------{}'.format(clean_word(word), translated_word))
