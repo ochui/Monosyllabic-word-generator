@@ -2,7 +2,7 @@ import time
 import random
 
 def clean_word(word):
-    return word.replace(',', '').strip()
+    return word.replace(',', '').strip().lower()
 
 def translate(word, to_ng='yo'):
     from googletrans import Translator
@@ -14,8 +14,15 @@ def translate(word, to_ng='yo'):
         t = random.randrange(6, 13)
         print('error occurred retrying in {}s..'.format(t))
         time.sleep(t)
-        trans = translator.translate(clean_word(word), dest=to_ng)
-        return trans
+        try:
+            trans = translator.translate(clean_word(word), dest=to_ng)
+            return trans
+        except Exception:
+            t = random.randrange(8, 15)
+            print('error occurred again retrying in {}s..'.format(t))
+            time.sleep(t)
+            trans = translator.translate(clean_word(word), dest=to_ng)
+            return trans
 
 def main():
     import json
